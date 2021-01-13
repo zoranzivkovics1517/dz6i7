@@ -1,0 +1,105 @@
+<html>
+	<head>
+        <title> Raspored slican onom na sajtu rafa </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</head>
+	<body>
+        <h3>Zoran Zivkovic S15/17</h3>
+        <input type="text" id="search" placeholder="Search...">
+        <button id="resetSearch">Reset Search</button>
+        <table border="1" style="border-collapse: collapse;" class="table" id="tableRaspored">
+            <thead>
+                <tr>
+                    <th>Predmet</th>
+                    <th>Tip</th>
+                    <th>Nastavnik</th>
+                    <th>Grupe</th>
+                    <th>Dan</th>
+                    <th>Termin</th>
+                    <th>Vreme</th>
+                </tr>
+            </thead>
+        <tbody>
+        {% for i in raspored %}
+            <tr>
+                
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td>
+                <td>{{i[4]}}</td>
+                <td>{{i[5]}}</td>
+                <td>{{i[6]}}</td>
+                <td>{{i[7]}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <div style="margin:0 auto; width:50%">
+            <div style="float: left;">
+                {% for i in nastavnici %}
+                    <p class="nastavnik" data-nastavnik="{{i[0]}}">{{i[0]}}</p>
+                {% endfor %}
+            </div>
+            <div style="float: right;">
+                {% for i in vreme %}
+                    <p class="vreme" data-vreme="{{i}}">{{i}}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $("#search").on("keyup", function() {
+                    rasporedSearch();
+                });
+                function rasporedSearch(){
+                    var value = $("#search").val().toLowerCase();
+                    $("#tableRaspored tbody tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+           
+                };
+
+                $(".nastavnik").on('click', function(){
+                    value = $(this).attr('data-nastavnik');
+                    $("#tableRaspored tbody tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value.toLowerCase()) > -1)
+                    });
+                });
+
+                $(".vreme").on('click', function(){
+                    value = $(this).attr('data-vreme');
+                    $("#tableRaspored tbody tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value.toLowerCase()) > -1)
+                    });
+                });
+
+                $("#resetSearch").on('click', function(){
+                    var value = "";
+                    $("#search").val(value);
+                    $("#tableRaspored tbody tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });  
+        </script>
+         <style>
+            .table{
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            .table>tbody>tr:nth-of-type(odd){
+                background-color: #3364FF;
+            }
+            .table>tbody>tr{
+                background-color: lightblue;
+            }
+            .nastavnik,.vreme{
+                cursor: pointer;
+            }
+            .nastavnik:hover, .vreme:hover{
+                text-decoration: underline;
+            }
+        </style>
+	</body>
+</html>
